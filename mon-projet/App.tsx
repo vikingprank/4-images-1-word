@@ -9,6 +9,7 @@ import { shuffleArray } from "./src/game/shuffleLetters";
 import { LetterButton } from "./src/components/LetterButton";
 import { isPropositionCorrect } from "./src/game/isPropositionCorrect";
 import { completeOneLetter } from "./src/game/completeOneLetter";
+import { checkIfCompleted } from "./src/game/checkIfCompleted";
 
 const WORD_TO_GUESS = "SLEEP";
 const IMAGE_01 = require("../mon-projet/images/sleep1.jpeg");
@@ -85,7 +86,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>4 images 1 word</Text>
+      <View>
+
       <RowView>
         <Image source={IMAGE_01} style={styles.image} />
         <Image source={IMAGE_02} style={styles.image} />
@@ -94,6 +96,7 @@ export default function App() {
         <Image source={IMAGE_03} style={styles.image} />
         <Image source={IMAGE_04} style={styles.image} />
       </RowView>
+      </View>
       <RowView>
         {displayedWord.map((letter, index) => {
           return (
@@ -117,14 +120,20 @@ export default function App() {
           })}
         </Text>
       </RowView>
-      <TouchableOpacity
-        onPress={() => {
-          setPropositionsState(initialPropositionsState);
-          setDisplayedWord(wordWithHiddenLetters);
-        }}
-      >
-        <Text style={{ ...styles.text, fontSize: 24 }}>Start over</Text>
-      </TouchableOpacity>
+      {checkIfCompleted([...WORD_TO_GUESS], displayedWord) ? (
+        <Text style={{ ...styles.text, fontSize: 24, color: "green" }}>
+          Bravo !
+        </Text>
+      ) : (
+        <TouchableOpacity
+          onPress={() => {
+            setPropositionsState(initialPropositionsState);
+            setDisplayedWord(wordWithHiddenLetters);
+          }}
+        >
+          <Text style={{ ...styles.text, fontSize: 24 }}>Start over</Text>
+        </TouchableOpacity>
+      )}
       <StatusBar style="auto" />
     </View>
   );
@@ -135,7 +144,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#111A2E",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    paddingVertical: 80,
   },
   text: {
     padding: 18,
