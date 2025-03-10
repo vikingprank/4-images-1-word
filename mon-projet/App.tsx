@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>4 iamges 1 word</Text>
+      <Text>4 images 1 word</Text>
       <StatusBar style="auto" />
     </View>
   );
