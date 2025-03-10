@@ -12,10 +12,10 @@ import { completeOneLetter } from "./src/game/completeOneLetter";
 import { checkIfCompleted } from "./src/game/checkIfCompleted";
 
 const WORD_TO_GUESS = "SLEEP";
-const IMAGE_01 = require("../mon-projet/images/sleep1.jpeg");
-const IMAGE_02 = require("../mon-projet/images/sleep2.jpeg");
-const IMAGE_03 = require("../mon-projet/images/sleep3.jpeg");
-const IMAGE_04 = require("../mon-projet/images/sleep4.jpeg");
+const IMAGE_01 = require("./images/sleep1.jpeg");
+const IMAGE_02 = require("./images/sleep2.jpeg");
+const IMAGE_03 = require("./images/sleep3.jpeg");
+const IMAGE_04 = require("./images/sleep4.jpeg");
 
 const RowView: React.FC<{
   children: ReactNode;
