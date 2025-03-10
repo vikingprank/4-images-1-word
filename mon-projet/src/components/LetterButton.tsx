@@ -11,14 +11,16 @@ export const LetterButton: React.FC<{
     <TouchableOpacity onPress={onCallBackPress}>
       <Text
         style={{
+          textAlign: 'center', 
+          width: 40,
           borderWidth: 1,
-          borderRadius: 2,
+          borderRadius: 10,
           fontSize: FONT_SIZE,
-          padding: 3,
-          margin: 3,
+          padding: 5,
+          margin: 5,
           backgroundColor:
             letterState === TriedState.NOT_TRIED
-              ? "transparent"
+              ? "white"
               : letterState === TriedState.TRIED_AND_FALSE
               ? "red"
               : "green",

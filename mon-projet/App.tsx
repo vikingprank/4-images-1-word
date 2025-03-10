@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { determineNumberOfLettersToHide } from "./src/game/determineNumberOfLettersToHide";
 import { chooseLettersToHide } from "./src/game/chooseLettersToHide";
 import { randomlyChooseExtraLetters } from "./src/game/randomlyChooseExtraLetters";
@@ -11,10 +11,14 @@ import { isPropositionCorrect } from "./src/game/isPropositionCorrect";
 import { completeOneLetter } from "./src/game/completeOneLetter";
 
 const WORD_TO_GUESS = "SLEEP";
+const IMAGE_01 = require("../mon-projet/images/sleep1.jpeg");
 
 const RowView: React.FC<{
   children: ReactNode;
-}> = ({ children }) => <View style={{ flexDirection: "row" }}>{children}</View>;
+  width?: number;
+}> = ({ children, width }) => (
+  <View style={{ flexDirection: "row", width }}>{children}</View>
+);
 
 export enum TriedState {
   NOT_TRIED = "not_tried",
@@ -61,10 +65,14 @@ export default function App() {
       }
       if (isCorrect) {
         setDisplayedWord((prevState) => {
-          const updatedDisplay = completeOneLetter(WORD_TO_GUESS, prevState.join(""), currentEntry[0])
-          updatedDisplay
-        return updatedDisplay
-        })
+          const updatedDisplay = completeOneLetter(
+            WORD_TO_GUESS,
+            prevState.join(""),
+            currentEntry[0]
+          );
+          updatedDisplay;
+          return updatedDisplay;
+        });
       }
       return { ...newTries };
     });
@@ -72,7 +80,27 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>4 images 1 word</Text>
+      <Text style={styles.text}>4 images 1 word</Text>
+      <RowView>
+        <Image
+          source={IMAGE_01}
+          style={{ width: 150, height: 150, borderRadius: 20 }}
+        />
+        <Image
+          source={IMAGE_01}
+          style={{ width: 150, height: 150, borderRadius: 20 }}
+        />
+      </RowView>
+      <RowView>
+        <Image
+          source={IMAGE_01}
+          style={{ width: 150, height: 150, borderRadius: 20 }}
+        />
+        <Image
+          source={IMAGE_01}
+          style={{ width: 150, height: 150, borderRadius: 20 }}
+        />
+      </RowView>
       <RowView>
         {displayedWord.map((letter, index) => {
           return (
@@ -82,7 +110,7 @@ export default function App() {
           );
         })}
       </RowView>
-      <RowView>
+      <RowView width={350}>
         <Text numberOfLines={2}>
           {allPossibleAnswers.map((letter, index) => {
             return (
@@ -96,19 +124,18 @@ export default function App() {
           })}
         </Text>
       </RowView>
-
       <StatusBar style="auto" />
     </View>
   );
 }
 
-export const FONT_SIZE = 24;
+export const FONT_SIZE = 32;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#111A2E",
     alignItems: "center",
     justifyContent: "center",
   },
-  text: { padding: 18, fontSize: FONT_SIZE },
+  text: { padding: 18, fontSize: FONT_SIZE, color: "white" },
 });
