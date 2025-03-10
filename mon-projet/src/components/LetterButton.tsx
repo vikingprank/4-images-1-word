@@ -1,6 +1,5 @@
-import { TouchableOpacity, Text, GestureResponderEvent } from "react-native";
-import { FONT_SIZE, TriedState } from "../../App";
-import { useState } from "react";
+import { TouchableOpacity, Text } from "react-native";
+import { TriedState } from "../../App";
 
 export const LetterButton: React.FC<{
   letter: string;
@@ -13,11 +12,15 @@ export const LetterButton: React.FC<{
         style={{
           textAlign: 'center', 
           width: 40,
+          height: 40,
           borderWidth: 1,
           borderRadius: 10,
-          fontSize: FONT_SIZE,
+          fontSize: 20,
+          fontWeight: '900',
           padding: 5,
           margin: 5,
+          borderBottomColor: 'darkgrey',
+          borderBottomWidth: 3,
           backgroundColor:
             letterState === TriedState.NOT_TRIED
               ? "white"

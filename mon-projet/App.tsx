@@ -12,12 +12,17 @@ import { completeOneLetter } from "./src/game/completeOneLetter";
 
 const WORD_TO_GUESS = "SLEEP";
 const IMAGE_01 = require("../mon-projet/images/sleep1.jpeg");
+const IMAGE_02 = require("../mon-projet/images/sleep2.jpeg");
+const IMAGE_03 = require("../mon-projet/images/sleep3.jpeg");
+const IMAGE_04 = require("../mon-projet/images/sleep4.jpeg");
 
 const RowView: React.FC<{
   children: ReactNode;
   width?: number;
 }> = ({ children, width }) => (
-  <View style={{ flexDirection: "row", width }}>{children}</View>
+  <View style={{ flexDirection: "row", width, justifyContent: "center" }}>
+    {children}
+  </View>
 );
 
 export enum TriedState {
@@ -82,24 +87,12 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.text}>4 images 1 word</Text>
       <RowView>
-        <Image
-          source={IMAGE_01}
-          style={{ width: 150, height: 150, borderRadius: 20 }}
-        />
-        <Image
-          source={IMAGE_01}
-          style={{ width: 150, height: 150, borderRadius: 20 }}
-        />
+        <Image source={IMAGE_01} style={styles.image} />
+        <Image source={IMAGE_02} style={styles.image} />
       </RowView>
       <RowView>
-        <Image
-          source={IMAGE_01}
-          style={{ width: 150, height: 150, borderRadius: 20 }}
-        />
-        <Image
-          source={IMAGE_01}
-          style={{ width: 150, height: 150, borderRadius: 20 }}
-        />
+        <Image source={IMAGE_03} style={styles.image} />
+        <Image source={IMAGE_04} style={styles.image} />
       </RowView>
       <RowView>
         {displayedWord.map((letter, index) => {
@@ -129,7 +122,6 @@ export default function App() {
   );
 }
 
-export const FONT_SIZE = 32;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -137,5 +129,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  text: { padding: 18, fontSize: FONT_SIZE, color: "white" },
+  text: {
+    padding: 18,
+    fontSize: 32,
+    color: "white",
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 20,
+    margin: 5,
+    borderColor: "#363F53",
+    borderWidth: 5,
+  },
 });
