@@ -4,27 +4,19 @@ import { determineNumberOfLettersToHide } from "./src/game/determineNumberOfLett
 import { chooseLettersToHide } from "./src/game/chooseLettersToHide";
 import { randomlyChooseExtraLetters } from "./src/game/randomlyChooseExtraLetters";
 import { filterOutHiddenLetters } from "./src/game/filterOutHiddenLetters";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { shuffleArray } from "./src/game/shuffleLetters";
 import { LetterButton } from "./src/components/LetterButton";
 import { isPropositionCorrect } from "./src/game/isPropositionCorrect";
 import { completeOneLetter } from "./src/game/completeOneLetter";
 import { checkIfCompleted } from "./src/game/checkIfCompleted";
+import { RowView } from "./src/components/RowView";
 
 const WORD_TO_GUESS = "SLEEP";
 const IMAGE_01 = require("./images/sleep1.jpeg");
 const IMAGE_02 = require("./images/sleep2.jpeg");
 const IMAGE_03 = require("./images/sleep3.jpeg");
 const IMAGE_04 = require("./images/sleep4.jpeg");
-
-const RowView: React.FC<{
-  children: ReactNode;
-  width?: number;
-}> = ({ children, width }) => (
-  <View style={{ flexDirection: "row", width, justifyContent: "center" }}>
-    {children}
-  </View>
-);
 
 export enum TriedState {
   NOT_TRIED = "not_tried",
@@ -87,7 +79,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View>
-
       <RowView>
         <Image source={IMAGE_01} style={styles.image} />
         <Image source={IMAGE_02} style={styles.image} />
