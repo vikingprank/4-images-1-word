@@ -110,7 +110,7 @@ export default function App() {
               <LetterButton
                 key={index}
                 letter={letter}
-                letterState={propositionsState[index][1] as TriedState}
+                letterState={propositionsState[index][1]}
                 onCallBackPress={() => handlePressButton(index)}
               />
             );
