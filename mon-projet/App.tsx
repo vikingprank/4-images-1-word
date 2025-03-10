@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { determineNumberOfLettersToHide } from "./src/game/determineNumberOfLettersToHide";
 import { chooseLettersToHide } from "./src/game/chooseLettersToHide";
 import { randomlyChooseExtraLetters } from "./src/game/randomlyChooseExtraLetters";
@@ -117,6 +117,14 @@ export default function App() {
           })}
         </Text>
       </RowView>
+      <TouchableOpacity
+        onPress={() => {
+          setPropositionsState(initialPropositionsState);
+          setDisplayedWord(wordWithHiddenLetters);
+        }}
+      >
+        <Text style={{ ...styles.text, fontSize: 24 }}>Start over</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
