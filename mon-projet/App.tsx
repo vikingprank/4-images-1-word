@@ -7,6 +7,8 @@ import { filterOutHiddenLetters } from "./src/game/filterOutHiddenLetters";
 import { ReactNode, useState } from "react";
 import { shuffleArray } from "./src/game/shuffleLetters";
 import { LetterButton } from "./src/components/LetterButton";
+import { isPropositionCorrect } from "./src/game/isPropositionCorrect";
+import { completeOneLetter } from "./src/game/completeOneLetter";
 
 const WORD_TO_GUESS = "SLEEP";
 
@@ -46,14 +48,23 @@ export default function App() {
     PropositionsState[]
   >(initialPropositionsState);
 
-  console.log(JSON.stringify(initialPropositionsState, null, 2));
-
   const handlePressButton = (index: number) => {
     setPropositionsState((prevState) => {
       const newTries = prevState; // Shallow Copy
       const currentEntry = newTries[index];
+      const isCorrect = isPropositionCorrect(lettersToHide, currentEntry[0]);
       if (currentEntry) {
-        prevState[index] = [currentEntry[0], TriedState.TRIED_AND_TRUE];
+        prevState[index] = [
+          currentEntry[0],
+          isCorrect ? TriedState.TRIED_AND_TRUE : TriedState.TRIED_AND_FALSE,
+        ];
+      }
+      if (isCorrect) {
+        setDisplayedWord((prevState) => {
+          const updatedDisplay = completeOneLetter(WORD_TO_GUESS, prevState.join(""), currentEntry[0])
+          updatedDisplay
+        return updatedDisplay
+        })
       }
       return { ...newTries };
     });
@@ -63,7 +74,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>4 images 1 word</Text>
       <RowView>
-        {wordWithHiddenLetters.map((letter, index) => {
+        {displayedWord.map((letter, index) => {
           return (
             <Text style={styles.text} key={index}>
               {letter}
