@@ -79,14 +79,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View>
-      <RowView>
-        <Image source={IMAGE_01} style={styles.image} />
-        <Image source={IMAGE_02} style={styles.image} />
-      </RowView>
-      <RowView>
-        <Image source={IMAGE_03} style={styles.image} />
-        <Image source={IMAGE_04} style={styles.image} />
-      </RowView>
+        <RowView>
+          <Image source={IMAGE_01} style={styles.image} />
+          <Image source={IMAGE_02} style={styles.image} />
+        </RowView>
+        <RowView>
+          <Image source={IMAGE_03} style={styles.image} />
+          <Image source={IMAGE_04} style={styles.image} />
+        </RowView>
       </View>
       <RowView>
         {displayedWord.map((letter, index) => {
@@ -111,20 +111,22 @@ export default function App() {
           })}
         </Text>
       </RowView>
-      {checkIfCompleted([...WORD_TO_GUESS], displayedWord) ? (
-        <Text style={{ ...styles.text, fontSize: 24, color: "green" }}>
-          Bravo !
-        </Text>
-      ) : (
-        <TouchableOpacity
-          onPress={() => {
-            setPropositionsState(initialPropositionsState);
-            setDisplayedWord(wordWithHiddenLetters);
-          }}
-        >
+
+      <TouchableOpacity
+        onPress={() => {
+          setPropositionsState(initialPropositionsState);
+          setDisplayedWord(wordWithHiddenLetters);
+        }}
+      >
+        {checkIfCompleted([...WORD_TO_GUESS], displayedWord) ? (
+          <Text style={{ ...styles.text, fontSize: 24, color: "green" }}>
+            Bravo ! Restart?
+          </Text>
+        ) : (
           <Text style={{ ...styles.text, fontSize: 24 }}>Start over</Text>
-        </TouchableOpacity>
-      )}
+        )}
+      </TouchableOpacity>
+
       <StatusBar style="auto" />
     </View>
   );
