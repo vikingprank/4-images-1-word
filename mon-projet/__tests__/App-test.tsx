@@ -6,6 +6,6 @@ describe('App', () => {
   test('Text renders correctly on HomeScreen', () => {
     const { getByText } = render(<App />);
 
-    getByText('4 images 1 word');
+    getByText('Start over');
   });
 });
