@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { determineNumberOfLettersToHide } from "./src/game/determineNumberOfLettersToHide";
 import { chooseLettersToHide } from "./src/game/chooseLettersToHide";
 import { randomlyChooseExtraLetters } from "./src/game/randomlyChooseExtraLetters";
@@ -11,12 +11,17 @@ import { isPropositionCorrect } from "./src/game/isPropositionCorrect";
 import { completeOneLetter } from "./src/game/completeOneLetter";
 import { checkIfCompleted } from "./src/game/checkIfCompleted";
 import { RowView } from "./src/components/RowView";
+import { chooseRandomWord } from "./src/game/chooseRandomWord";
+import { wordsToGuess } from "./wordsToGuess";
 
-const WORD_TO_GUESS = "SLEEP";
-const IMAGE_01 = require("./images/sleep1.jpeg");
-const IMAGE_02 = require("./images/sleep2.jpeg");
-const IMAGE_03 = require("./images/sleep3.jpeg");
-const IMAGE_04 = require("./images/sleep4.jpeg");
+const screenWidth = Dimensions.get("window").width;
+
+const randomWordObj = chooseRandomWord(wordsToGuess)
+const WORD_TO_GUESS = randomWordObj.word
+const IMAGE_01 = randomWordObj.images[0]
+const IMAGE_02 = randomWordObj.images[1]
+const IMAGE_03 = randomWordObj.images[2]
+const IMAGE_04 = randomWordObj.images[3]
 
 export enum TriedState {
   NOT_TRIED = "not_tried",
@@ -91,7 +96,7 @@ export default function App() {
       <RowView>
         {displayedWord.map((letter, index) => {
           return (
-            <Text style={styles.text} key={index}>
+            <Text style={[styles.text, { fontSize: screenWidth / displayedWord.length / 3 }]} key={index}>
               {letter}
             </Text>
           );
