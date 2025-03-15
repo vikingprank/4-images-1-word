@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { determineNumberOfLettersToHide } from "./src/game/determineNumberOfLettersToHide";
 import { chooseLettersToHide } from "./src/game/chooseLettersToHide";
 import { randomlyChooseExtraLetters } from "./src/game/randomlyChooseExtraLetters";
@@ -13,15 +13,12 @@ import { checkIfCompleted } from "./src/game/checkIfCompleted";
 import { RowView } from "./src/components/RowView";
 import { chooseRandomWord } from "./src/game/chooseRandomWord";
 import { wordsToGuess } from "./wordsToGuess";
+import { ImageGrid } from "./src/components/ImageGrid";
 
 const screenWidth = Dimensions.get("window").width;
 
-const randomWordObj = chooseRandomWord(wordsToGuess)
-const WORD_TO_GUESS = randomWordObj.word
-const IMAGE_01 = randomWordObj.images[0]
-const IMAGE_02 = randomWordObj.images[1]
-const IMAGE_03 = randomWordObj.images[2]
-const IMAGE_04 = randomWordObj.images[3]
+const randomWordData = chooseRandomWord(wordsToGuess)
+const WORD_TO_GUESS = randomWordData.word
 
 export enum TriedState {
   NOT_TRIED = "not_tried",
@@ -83,16 +80,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View>
-        <RowView>
-          <Image source={IMAGE_01} style={styles.image} />
-          <Image source={IMAGE_02} style={styles.image} />
-        </RowView>
-        <RowView>
-          <Image source={IMAGE_03} style={styles.image} />
-          <Image source={IMAGE_04} style={styles.image} />
-        </RowView>
-      </View>
+      <ImageGrid images={randomWordData.images}/>
       <RowView>
         {displayedWord.map((letter, index) => {
           return (
@@ -137,7 +125,7 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#111A2E",
