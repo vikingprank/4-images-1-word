@@ -2,7 +2,7 @@ export const completeOneLetter = (
   wordToGuess: string,
   wordWithUnderScores: string,
   proposition: string
-) => {
+): string[] => {
   const wordToGuessArray = [...wordToGuess];
   const wordWithUnderScoresArray = [...wordWithUnderScores];
 

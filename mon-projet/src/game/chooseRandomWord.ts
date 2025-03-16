@@ -1,6 +1,6 @@
-import { WordsToGuess } from "../../wordsToGuess";
+import { WordData, WordsToGuess } from "../../wordsToGuess";
 
-export const chooseRandomWord = (wordsToGuess: WordsToGuess) => {
+export const chooseRandomWord = (wordsToGuess: WordsToGuess): WordData => {
   const numberOfWords = Object.keys(wordsToGuess).length;
 
   const randomIndex = randomIntFromInterval(0, numberOfWords - 1);

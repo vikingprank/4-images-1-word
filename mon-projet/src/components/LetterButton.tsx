@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text } from "react-native";
-import { TriedState } from "../../App";
+import { TriedState } from "../types";
 
 export const LetterButton: React.FC<{
   letter: string;

@@ -6,6 +6,6 @@ describe('App', () => {
   test('Text renders correctly on HomeScreen', () => {
     const { getByText } = render(<App />);
 
-    getByText('Start over');
+    getByText('Change word');
   });
 });

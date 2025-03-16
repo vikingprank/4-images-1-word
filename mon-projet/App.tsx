@@ -1,149 +1,32 @@
-import { StatusBar } from "expo-status-bar";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { determineNumberOfLettersToHide } from "./src/game/determineNumberOfLettersToHide";
-import { chooseLettersToHide } from "./src/game/chooseLettersToHide";
-import { randomlyChooseExtraLetters } from "./src/game/randomlyChooseExtraLetters";
-import { filterOutHiddenLetters } from "./src/game/filterOutHiddenLetters";
-import { useState } from "react";
-import { shuffleArray } from "./src/game/shuffleLetters";
-import { LetterButton } from "./src/components/LetterButton";
-import { isPropositionCorrect } from "./src/game/isPropositionCorrect";
-import { completeOneLetter } from "./src/game/completeOneLetter";
-import { checkIfCompleted } from "./src/game/checkIfCompleted";
-import { RowView } from "./src/components/RowView";
+import { useEffect, useState } from "react";
 import { chooseRandomWord } from "./src/game/chooseRandomWord";
-import { wordsToGuess } from "./wordsToGuess";
-import { ImageGrid } from "./src/components/ImageGrid";
-
-const screenWidth = Dimensions.get("window").width;
-
-const randomWordData = chooseRandomWord(wordsToGuess)
-const WORD_TO_GUESS = randomWordData.word
-
-export enum TriedState {
-  NOT_TRIED = "not_tried",
-  TRIED_AND_FALSE = "tried_and_false",
-  TRIED_AND_TRUE = "tried_and_true",
-}
-
-type PropositionsState = [string, TriedState];
-
-const numberOfLettersToHide = determineNumberOfLettersToHide(WORD_TO_GUESS);
-const lettersToHide = chooseLettersToHide(WORD_TO_GUESS, numberOfLettersToHide);
-const otherPropositions = randomlyChooseExtraLetters(lettersToHide);
-const wordWithHiddenLetters = filterOutHiddenLetters(
-  WORD_TO_GUESS,
-  lettersToHide
-);
-const allPossibleAnswers = shuffleArray(
-  lettersToHide.concat(otherPropositions)
-);
+import { WordData, wordsToGuess } from "./wordsToGuess";
+import AppContent from "./AppContent";
+import { Text, TouchableOpacity } from "react-native";
+import { checkIfCompleted } from "./src/game/checkIfCompleted";
 
 export default function App() {
-  const [displayedWord, setDisplayedWord] = useState(wordWithHiddenLetters);
+  useEffect(() => {
+    changeWord();
+  }, []);
 
-  const initialPropositionsState: PropositionsState[] = {
-    ...allPossibleAnswers.map((letter) => {
-      return [letter, TriedState.NOT_TRIED];
-    }),
-  };
+  const [wordToGuess, setWordToGuess] = useState<WordData | undefined>();
 
-  const [propositionsState, setPropositionsState] = useState<
-    PropositionsState[]
-  >(initialPropositionsState);
-
-  const handlePressButton = (index: number) => {
-    setPropositionsState((prevState) => {
-      const newTries = prevState; // Shallow Copy
-      const currentEntry = newTries[index];
-      const isCorrect = isPropositionCorrect(lettersToHide, currentEntry[0]);
-      if (currentEntry) {
-        prevState[index] = [
-          currentEntry[0],
-          isCorrect ? TriedState.TRIED_AND_TRUE : TriedState.TRIED_AND_FALSE,
-        ];
-      }
-      if (isCorrect) {
-        setDisplayedWord((prevState) => {
-          const updatedDisplay = completeOneLetter(
-            WORD_TO_GUESS,
-            prevState.join(""),
-            currentEntry[0]
-          );
-          updatedDisplay;
-          return updatedDisplay;
-        });
-      }
-      return { ...newTries };
-    });
-  };
+  function changeWord() {
+    console.log("Changing word");
+    setWordToGuess(chooseRandomWord(wordsToGuess));
+  }
+  if (!wordToGuess) return <Text style={{ color: "white" }}>Loading...</Text>;
 
   return (
-    <View style={styles.container}>
-      <ImageGrid images={randomWordData.images}/>
-      <RowView>
-        {displayedWord.map((letter, index) => {
-          return (
-            <Text style={[styles.text, { fontSize: screenWidth / displayedWord.length / 3 }]} key={index}>
-              {letter}
-            </Text>
-          );
-        })}
-      </RowView>
-      <RowView width={350}>
-        <Text numberOfLines={2}>
-          {allPossibleAnswers.map((letter, index) => {
-            return (
-              <LetterButton
-                key={index}
-                letter={letter}
-                letterState={propositionsState[index][1]}
-                onCallBackPress={() => handlePressButton(index)}
-              />
-            );
-          })}
-        </Text>
-      </RowView>
-
+    <>
+      <AppContent wordToGuess={wordToGuess} />
       <TouchableOpacity
-        onPress={() => {
-          setPropositionsState(initialPropositionsState);
-          setDisplayedWord(wordWithHiddenLetters);
-        }}
+        onPress={() => changeWord()}
+        style={{ backgroundColor: "blue", justifyContent: "center" }}
       >
-        {checkIfCompleted([...WORD_TO_GUESS], displayedWord) ? (
-          <Text style={{ ...styles.text, fontSize: 24, color: "green" }}>
-            Bravo ! Restart?
-          </Text>
-        ) : (
-          <Text style={{ ...styles.text, fontSize: 24 }}>Start over</Text>
-        )}
+        <Text style={{ color: "white" }}>Change word</Text>
       </TouchableOpacity>
-
-      <StatusBar style="auto" />
-    </View>
+    </>
   );
 }
-
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#111A2E",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    paddingVertical: 80,
-  },
-  text: {
-    padding: 18,
-    fontSize: 32,
-    color: "white",
-  },
-  image: {
-    width: 150,
-    height: 150,
-    borderRadius: 20,
-    margin: 5,
-    borderColor: "#363F53",
-    borderWidth: 5,
-  },
-});

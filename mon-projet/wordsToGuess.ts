@@ -1,10 +1,12 @@
 import { ImageSourcePropType } from "react-native";
 
+export type WordData = {
+  word: string;
+  images: ImageSourcePropType[];
+};
+
 export type WordsToGuess= {
-    [key: string] : {
-        word: string
-        images: ImageSourcePropType[]
-    }
+    [key: string] : WordData
 }
 
 export const wordsToGuess: WordsToGuess = {
