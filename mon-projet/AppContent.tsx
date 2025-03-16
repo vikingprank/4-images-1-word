@@ -15,7 +15,10 @@ const screenWidth = Dimensions.get("window").width;
 
 export default function AppContent({ wordToGuess }: { wordToGuess: WordData }) {
   useEffect(() => {
-    setGame(startGame(wordToGuess));
+    const gameData = startGame(wordToGuess)
+    setGame(gameData);
+    setDisplayedWord(gameData.incompleteWord)
+    setPropositionsState(initiatePropositionsState(gameData.allPossibleAnswers))
   }, [wordToGuess]);
 
   const [game, setGame] = useState<GameData>(startGame(wordToGuess));
