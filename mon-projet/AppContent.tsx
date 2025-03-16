@@ -13,16 +13,28 @@ import { initiatePropositionsState } from "./src/game/initiatePropositionsState"
 
 const screenWidth = Dimensions.get("window").width;
 
-export default function AppContent({ wordToGuess }: { wordToGuess: WordData }) {
+export default function AppContent({
+  wordToGuess,
+  wordStateCallback,
+}: {
+  wordToGuess: WordData;
+  wordStateCallback: (state: string[]) => void;
+}) {
   useEffect(() => {
-    const gameData = startGame(wordToGuess)
+    const gameData = startGame(wordToGuess);
     setGame(gameData);
-    setDisplayedWord(gameData.incompleteWord)
-    setPropositionsState(initiatePropositionsState(gameData.allPossibleAnswers))
+    setDisplayedWord(gameData.incompleteWord);
+    setPropositionsState(
+      initiatePropositionsState(gameData.allPossibleAnswers)
+    );
   }, [wordToGuess]);
 
   const [game, setGame] = useState<GameData>(startGame(wordToGuess));
   const [displayedWord, setDisplayedWord] = useState(game.incompleteWord);
+
+  useEffect(() => {
+    wordStateCallback(displayedWord);
+  }, [displayedWord, wordStateCallback]);
 
   const initialPropositionsState = initiatePropositionsState(
     game.allPossibleAnswers
@@ -34,10 +46,13 @@ export default function AppContent({ wordToGuess }: { wordToGuess: WordData }) {
   const handlePressButton = (indexPressed: number) => {
     setPropositionsState((prevState) => {
       if (!prevState) return []; // Ensure prevState isn't undefined
-  
+
       return prevState.map((prop, index) => {
         if (index === indexPressed) {
-          const isCorrect = isPropositionCorrect(game.lettersToHide, prop.letter);
+          const isCorrect = isPropositionCorrect(
+            game.lettersToHide,
+            prop.letter
+          );
           return {
             letter: prop.letter,
             triedState: isCorrect
@@ -51,8 +66,12 @@ export default function AppContent({ wordToGuess }: { wordToGuess: WordData }) {
     setDisplayedWord((prevState) => {
       const letterPressed = propositionsState[indexPressed]?.letter;
       if (!letterPressed) return prevState; // Avoid errors if letter is missing
-  
-      return completeOneLetter(game.completeWord, prevState.join(""), letterPressed);
+
+      return completeOneLetter(
+        game.completeWord,
+        prevState.join(""),
+        letterPressed
+      );
     });
   };
 
@@ -80,7 +99,6 @@ export default function AppContent({ wordToGuess }: { wordToGuess: WordData }) {
       <RowView width={350}>
         <Text numberOfLines={2}>
           {propositionsState.map((proposition, index) => {
-            console.log({proposition})
             return (
               <LetterButton
                 key={index}
